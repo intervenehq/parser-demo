@@ -7,14 +7,23 @@ import wasm from 'vite-plugin-wasm';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), nodePolyfills(), wasm(), topLevelAwait()],
+  plugins: [wasm(), topLevelAwait(), react(), nodePolyfills()],
   worker: {
-    plugins: [topLevelAwait(), wasm(), nodePolyfills()],
-    format: 'es',
+    plugins: [wasm(), topLevelAwait(), nodePolyfills()],
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
+      },
+    },
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@jsdevtools/ono': '@jsdevtools/ono/cjs/index.js',
     },
+  },
+  base: '/parser-demo',
+  build: {
+    sourcemap: true,
   },
 });

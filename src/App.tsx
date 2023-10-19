@@ -90,7 +90,11 @@ export default function App() {
             href="https://github.com/tryintervene/parser"
             target="_blank"
           >
-            <img src="/logo.svg" alt="logo" className="w-8 rounded-lg" />
+            <img
+              src="/parser-demo/logo.svg"
+              alt="logo"
+              className="w-8 rounded-lg"
+            />
             <h1 className="text-lg">@intervene/parser</h1>
           </a>
           <DropdownMenu>

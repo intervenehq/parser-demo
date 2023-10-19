@@ -461,7 +461,7 @@ const ConfigForm = (props: { onSubmit: () => void }) => {
           name="codeGenLanguage"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Code-Gen langauge</FormLabel>
+              <FormLabel>Code-Gen language</FormLabel>
               <FormControl>
                 <Select
                   {...field}

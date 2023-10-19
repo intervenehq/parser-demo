@@ -104,7 +104,7 @@ export default function App() {
                 size="sm"
                 className="text-left text-primary/50 text-xs font-normal h-fit py-1"
               >
-                Overwhlmed? <br />
+                Overwhelmed? <br />
                 Click here to auto fill the form
               </Button>
             </DropdownMenuTrigger>

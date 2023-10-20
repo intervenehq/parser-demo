@@ -85,6 +85,7 @@ self.addEventListener('message', async (e) => {
         type: 'done',
         error: e,
       });
+      console.error(e);
     }
   }
 });

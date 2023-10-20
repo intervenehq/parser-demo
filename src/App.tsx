@@ -208,7 +208,13 @@ export default function App() {
 
       {output && (
         <div className="space-y-2 mb-10">
-          <p>Here is the final output:</p>
+          <p>
+            JS code to call the{' '}
+            <pre className="inline text-sm bg-gray-200 p-1 rounded">
+              {output.path}
+            </pre>{' '}
+            API:
+          </p>
           <CodeEditor
             readOnly
             value={`

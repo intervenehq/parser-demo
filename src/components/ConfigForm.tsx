@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { json } from '@codemirror/lang-json';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CodeGenLanguage } from '@intervene/parser';
 import CodeEditor from '@uiw/react-codemirror';
 import { memoize } from 'lodash';
 import { RotateCcwIcon, UploadIcon, XIcon } from 'lucide-react';
@@ -33,26 +32,12 @@ import { Textarea } from '@/components/ui/textarea';
 import {
   configSchema,
   ConfigSchemaZ,
+  defaultConfig,
   getConfig,
   setConfig,
   VectorStore,
 } from '@/lib/config';
 import { OpenApi } from '@/types/openapi';
-
-const formDefaultValue: ConfigSchemaZ = {
-  objective: '',
-  openaiApiKey: '',
-  openapis: [],
-  embeddingProvider: 'openai',
-  embeddingModel: 'text-embedding-ada-002',
-  llmProvider: 'openai',
-  llmModel: 'gpt-4',
-  context: ['{', '  ', '}'].join('\n'),
-  vectorStore: VectorStore.Voya,
-  chromaHost: 'http://0.0.0.0:8000',
-  chromaCollection: 'intervene-parser',
-  codeGenLanguage: CodeGenLanguage.javascript,
-};
 
 const cachedSizeof = memoize((file) => Math.round(objectSizeOf(file) / 1024));
 
@@ -62,7 +47,7 @@ const ConfigForm = (props: { onSubmit: () => void }) => {
     defaultValues: async () => {
       const val = await getConfig();
 
-      return val ?? formDefaultValue;
+      return val ?? defaultConfig;
     },
   });
 
@@ -492,7 +477,7 @@ const ConfigForm = (props: { onSubmit: () => void }) => {
           <Button
             variant="ghost"
             className="text-red-700"
-            onClick={() => form.reset(formDefaultValue)}
+            onClick={() => form.reset(defaultConfig)}
             type="button"
           >
             <RotateCcwIcon className="w-4 mr-2" />

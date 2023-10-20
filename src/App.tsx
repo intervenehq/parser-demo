@@ -12,7 +12,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
-import { ConfigSchemaZ, getConfig, setConfig } from '@/lib/config';
+import {
+  ConfigSchemaZ,
+  defaultConfig,
+  getConfig,
+  setConfig,
+} from '@/lib/config';
 import githubOpenapi from '@/lib/github.openapi.json';
 import twitterOpenapi from '@/lib/twitter.openapi.json';
 import { cn } from '@/lib/utils';
@@ -72,6 +77,14 @@ export default function App() {
         }
       });
 
+      newWorker.addEventListener('error', (e) => {
+        console.error(e);
+      });
+
+      newWorker.addEventListener('messageerror', (e) => {
+        console.error(e);
+      });
+
       newWorker.postMessage('run');
     });
 
@@ -112,7 +125,11 @@ export default function App() {
               <DropdownMenuItem
                 onSelect={async () => {
                   const config = await getConfig();
-                  await setConfig({ ...config!, ...twitterConfig });
+                  await setConfig({
+                    ...defaultConfig,
+                    ...config,
+                    ...twitterConfig,
+                  });
                   setConfigFormKey(configFormKey + 1);
                 }}
               >
@@ -121,7 +138,11 @@ export default function App() {
               <DropdownMenuItem
                 onSelect={async () => {
                   const config = await getConfig();
-                  await setConfig({ ...config!, ...githubConfig });
+                  await setConfig({
+                    ...defaultConfig,
+                    ...config,
+                    ...githubConfig,
+                  });
                   setConfigFormKey(configFormKey + 1);
                 }}
               >

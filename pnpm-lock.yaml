@@ -15,8 +15,8 @@ dependencies:
     specifier: ^3.3.2
     version: 3.3.2(react-hook-form@7.47.0)
   '@intervene/parser':
-    specifier: ^0.1.0
-    version: 0.1.0(openapi-types@12.1.3)
+    specifier: ^0.1.2
+    version: 0.1.2(openapi-types@12.1.3)
   '@pinecone-database/pinecone':
     specifier: ^1.1.1
     version: 1.1.1
@@ -807,8 +807,8 @@ packages:
       - supports-color
     dev: true
 
-  /@intervene/parser@0.1.0(openapi-types@12.1.3):
-    resolution: {integrity: sha512-T/1EH93YVIVaTcG2avCQUjo7vUSBCSNCSAHaxd6KKweQ+Zfilml25fNGFFXZBRdACHrGBEPIHhQCVoEeiucJLQ==}
+  /@intervene/parser@0.1.2(openapi-types@12.1.3):
+    resolution: {integrity: sha512-n0AGRrh3IgMfdHD/6MUr+dYyDusX5B1X+WKEhRak1rprZyCZL6mF8rJ2MKJY9WmhJuQg37FASkLcIKuQzJafdw==}
     dependencies:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
       gpt-tokenizer: 2.1.2

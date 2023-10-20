@@ -22,6 +22,11 @@ export default defineConfig({
       '@jsdevtools/ono': '@jsdevtools/ono/cjs/index.js',
     },
   },
+  server: {
+    fs: {
+      allow: ['..'],
+    },
+  },
   base: '/parser-demo',
   build: {
     sourcemap: true,

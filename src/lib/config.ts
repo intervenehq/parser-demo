@@ -47,6 +47,21 @@ export const configSchema = z.object({
 });
 export type ConfigSchemaZ = z.infer<typeof configSchema>;
 
+export const defaultConfig: ConfigSchemaZ = {
+  objective: '',
+  openaiApiKey: '',
+  openapis: [],
+  embeddingProvider: 'openai',
+  embeddingModel: 'text-embedding-ada-002',
+  llmProvider: 'openai',
+  llmModel: 'gpt-4',
+  context: ['{', '  ', '}'].join('\n'),
+  vectorStore: VectorStore.Voya,
+  chromaHost: 'http://0.0.0.0:8000',
+  chromaCollection: 'intervene-parser',
+  codeGenLanguage: CodeGenLanguage.javascript,
+};
+
 export const CONFIG_KEY = 'CONFIG_LOCAL_STORAGE';
 
 export const getConfig = async () => {

@@ -65,7 +65,7 @@ const ConfigForm = (props: { onSubmit: () => void }) => {
     try {
       const openapi = await SwaggerParser.parse(JSON.parse(data));
 
-      form.setValue('openapis', [openapi as OpenApi]);
+      form.setValue('openapis', [...watchForm.openapis, openapi as OpenApi]);
     } catch (e) {
       alert('Invalid OpenAPI spec');
     }

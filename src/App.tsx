@@ -1,9 +1,18 @@
 import { useState } from 'react';
+import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
+import { type Parser } from '@intervene/parser';
 import CodeEditor from '@uiw/react-codemirror';
 import { Loader2Icon, StopCircleIcon } from 'lucide-react';
+import { AsyncReturnType } from 'type-fest';
 
 import ConfigForm from '@/components/ConfigForm';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -36,6 +45,8 @@ const githubConfig: Partial<ConfigSchemaZ> = {
   context: ['{', '  "username": { "type": "string" }', '}'].join('\n'),
 };
 
+type ParserResult = AsyncReturnType<Parser['parse']>;
+
 export default function App() {
   const [appState, setAppState] = useState<'form' | 'parsing' | 'parsed'>(
     'form',
@@ -43,6 +54,7 @@ export default function App() {
   const [logs, setLogs] = useState<
     { type: 'log' | 'error' | 'warn' | 'info'; message: any[] }[]
   >([]);
+  const [output, setOutput] = useState<ParserResult>();
   const [worker, setWorker] = useState<Worker>();
   const [configFormKey, setConfigFormKey] = useState(0);
 
@@ -64,10 +76,7 @@ export default function App() {
               { type: 'error', message: [e.data.error.message] },
             ]);
           } else {
-            setLogs((prev) => [
-              ...prev,
-              { type: 'log', message: [e.data.data] },
-            ]);
+            setOutput(e.data.data);
           }
         } else if (e.data.type && e.data.message) {
           setLogs((prev) => [
@@ -195,6 +204,62 @@ export default function App() {
         <Button className="mb-10" onClick={() => setAppState('form')}>
           Go back
         </Button>
+      )}
+
+      {output && (
+        <div className="space-y-2 mb-10">
+          <p>Here is the final output:</p>
+          <CodeEditor
+            readOnly
+            value={`
+${output.pathParams}
+${output.queryParams}
+${output.bodyParams}
+
+let apiUrl = 'http://server.com/api' + '${output.path}';
+
+const bodyParams = get_body_params(); 
+const queryParams = get_query_params(); 
+const pathParams = get_path_params(); 
+
+// Replace path parameters
+for (const [key, value] of Object.entries(pathParams)) {
+  apiUrl = apiUrl.replace('{' + key + '}', value);
+}
+
+const queryString = new URLSearchParams(queryParams).toString();
+
+const result = await fetch(apiUrl + '?' + queryString, {
+  method: '${output.method.toUpperCase()}',
+  headers: {
+    'Content-Type': '${output.responseContentType}'
+  },
+  body: JSON.stringify(bodyParams)
+})
+`}
+            theme="dark"
+            maxHeight="300px"
+            extensions={[javascript()]}
+          />
+          <Accordion type="single" collapsible>
+            <AccordionItem value="code-snippet" className="border-b-0">
+              <AccordionTrigger className="text-sm">
+                Click here to reveal the full output from the parser
+              </AccordionTrigger>
+              <AccordionContent>
+                <CodeEditor
+                  readOnly
+                  value={JSON.stringify(output, null, 2)}
+                  theme="dark"
+                  maxHeight="300px"
+                  extensions={[json()]}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Separator />
+        </div>
       )}
 
       {appState !== 'form' &&
